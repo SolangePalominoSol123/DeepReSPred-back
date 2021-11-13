@@ -105,13 +105,7 @@ while True:
             already=validateAndAssignResults(actualIdRequest,pfamID,email)
             print("Already calculated?")
             print(already)
-            nameFileFull=os.path.join(DAEMON_QUEUE_FOLDER, secure_filename(actualIdRequest))
-            if os.path.exists(nameFileFull):
-                os.remove(nameFileFull)
-                print("File queue of prediction idRequest removed. The prediction process has finished.")
-                print(actualIdRequest)
-            else:
-                print("The file queue of prediction idRequest to remove does not exist.")
+            
 
         if not already:
 
@@ -166,8 +160,16 @@ while True:
             
 
         else:
-            freeAlgorithm=True
+            
+            nameFileFull=os.path.join(DAEMON_QUEUE_FOLDER, secure_filename(actualIdRequest))
+            if os.path.exists(nameFileFull):
+                os.remove(nameFileFull)
+                print("File queue of prediction idRequest removed. The prediction process has finished.")
+                print(actualIdRequest)
+            else:
+                print("The file queue of prediction idRequest to remove does not exist.")
 
+            freeAlgorithm=True
         #sys.exit()
 
 

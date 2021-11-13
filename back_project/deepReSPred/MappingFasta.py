@@ -250,7 +250,7 @@ def obtenerInfoEstructura(rsp):
     if(numPDBFound!=0):
         uniprot_acc=rsp["response"]["docs"][0]["entry_uniprot_accession"][0]
         #interpro_name=rsp["response"]["docs"][0]["interpro_repeat_name"][0]
-        pfam=rsp["response"]["docs"][0]["pfam"][0]
+        #pfam=rsp["response"]["docs"][0]["pfam"][0]
         pdb_accession=rsp["response"]["docs"][0]["pdb_accession"]
 
         print("Uniprot accession: ", uniprot_acc)
