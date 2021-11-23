@@ -126,14 +126,16 @@ class RequestResource(Resource):
 
     def post(self):
         request_json = request.get_json()
-
+        '''
         ipClientPort = str(request.headers['Host'])
         pos=ipClientPort.find(":")
         ipClient=ipClientPort[:pos]
+        '''
+        ipClient = request_json['ipClient']
 
         #ipClient="190.237.60.38" ############################################## BORRAR
         #ipClient="190.187.147.146" #brigito
-        ipClient="179.6.204.26" #eddie
+        #ipClient="179.6.204.26" #eddie
 
         endpoint=self.getEndpointAdditionalData(ipClient)
         print(endpoint)
