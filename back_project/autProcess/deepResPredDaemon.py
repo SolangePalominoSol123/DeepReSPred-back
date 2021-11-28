@@ -13,6 +13,7 @@ from auxiliarFunctionsDaemon import clearDir
 from auxiliarFunctionsDaemon import createDir
 from auxiliarFunctionsDaemon import convertSto2Fasta
 from auxiliarFunctionsDaemon import validateAndAssignResults
+from auxiliarFunctionsDaemon import sendEmailWithResults
 from auxiliarFunctionsDaemon import verifyDirOrCreate
 from auxiliarFunctionsDaemon import processingAlignments
 
@@ -215,6 +216,27 @@ while True:
 
             print("Making TMalignments...")
             processingResults(dirPDBAux, dirResults,actualIdRequest)
+
+            print("Sending email with results")
+            #bring data from DB
+            dataInput={
+                "idRequest":actualIdRequest
+            }
+            response = requests.post(URL_BACK_END_DEEPRESPRED+"searchpred/", json=dataInput)
+            rsp=response.json()
+
+            idStatus=rsp["idStatus"]
+            typeInput=rsp["typeInput"]
+            actualIdRequest=rsp["idRequest"]
+            email=rsp["email"]
+            pfamID=rsp["pfamID"]
+            print(rsp)
+
+            if (email!=""):
+                sendEmailWithResults(actualIdRequest, email)
+
+
+            #taking out from queue request id
 
             nameFileFull=os.path.join(DAEMON_QUEUE_FOLDER, secure_filename(actualIdRequest))
 
