@@ -144,45 +144,44 @@ class RequestResource(Resource):
             newEndpoint = self.insertNewEndpoint(endpoint)
             endpoint['idEndpoint'] = newEndpoint['idEndpoint']
 
-        else:
             
-            if (endpoint['active']):
+        if (endpoint['active']):
 
-                print("verify number of requests today from ipClient")
-                rsp = self.exceedsDailyRequests(endpoint['idEndpoint'], ipClient)
+            print("verify number of requests today from ipClient")
+            rsp = self.exceedsDailyRequests(endpoint['idEndpoint'], ipClient)
 
-                if (not rsp['active']):
-                    print("ipClient access denied")
-                    response={
-                        'error':True,
-                        'errorMsg':"The requests from IP "+ ipClient + " are not allowed. Please try again tomorrow.",
-                        'maxRequests' : rsp['maxRequests'],
-                        'active' : rsp['active']
-                    }
-                    return response, 200
-                
-                if (rsp['exceed']):
-                    print("Exceeds Number of Daily Requests")
-                    response={
-                        'error':True,
-                        'errorMsg':"This service only allows a maximum of " + str(rsp['maxRequests']) +" requests per day. Please try again tomorrow.",
-                        'maxRequests' : rsp['maxRequests'],
-                        'numRequests' : rsp['numRequests'],
-                        'exceed' : rsp['exceed']
-                    }
-                    return response, 200
-
-            else:
-                #endPoint bloqueado
+            if (not rsp['active']):
+                print("ipClient access denied")
                 response={
-                        'error':True,
-                        'errorMsg':"Requests from (" +  endpoint['latitude'] + ", " + endpoint['longitude'] + ") - " + endpoint['countryName']+ " are not allowed",
-                        'latitude' : endpoint['latitude'],
-                        'longitude' : endpoint['longitude'],
-                        'countryName' : endpoint['countryName'],
-                        'active' : endpoint['active']
-                    }
+                    'error':True,
+                    'errorMsg':"The requests from IP "+ ipClient + " are not allowed. Please try again tomorrow.",
+                    'maxRequests' : rsp['maxRequests'],
+                    'active' : rsp['active']
+                }
                 return response, 200
+            
+            if (rsp['exceed']):
+                print("Exceeds Number of Daily Requests")
+                response={
+                    'error':True,
+                    'errorMsg':"This service only allows a maximum of " + str(rsp['maxRequests']) +" requests per day. Please try again tomorrow.",
+                    'maxRequests' : rsp['maxRequests'],
+                    'numRequests' : rsp['numRequests'],
+                    'exceed' : rsp['exceed']
+                }
+                return response, 200
+
+        else:
+            #endPoint bloqueado
+            response={
+                    'error':True,
+                    'errorMsg':"Requests from (" +  endpoint['latitude'] + ", " + endpoint['longitude'] + ") - " + endpoint['countryName']+ " are not allowed",
+                    'latitude' : endpoint['latitude'],
+                    'longitude' : endpoint['longitude'],
+                    'countryName' : endpoint['countryName'],
+                    'active' : endpoint['active']
+                }
+            return response, 200
 
 
         #Register request
