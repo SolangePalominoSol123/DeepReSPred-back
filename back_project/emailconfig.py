@@ -28,7 +28,7 @@ def sendEmail(receiver, files, type, idRequest):
             '<h4 style="font-weight:300">'+ body +'</h4>' + \
             '<h4 style="font-weight: bold;"> Prediction Request ID: ' + str(idRequest) + '</h4>' + \
             '<a href="'+URL_FRONT_END_DEEPRESPRED+'">Go to DeepReSPred Web!</a>'+ \
-            '<h3>_ _ _</h3>' + \
+            '<h3>.....</h3>' + \
             '<h3>DeepReSPred Team</h3>' 
 
     yag.send(
