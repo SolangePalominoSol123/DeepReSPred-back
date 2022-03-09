@@ -4,10 +4,10 @@ keys={
     "ACCESS_SECRET_KEY": "VOSMDoWGtdKq/rK6UlAzaxHLdp1MW9Qdjh+Nx2Na",
     "AWS_SESSION_TOKEN": "FwoGZXIvYXdzECAaDOplmZBHFDy+mMstqiLCAcCwHd6TG7ckR7baH5ZPKYaA0OdyGLKhQcKqhu/vVUouuxVGQGHv36f/YdgRs5U+MtYRyUQ7X6Uy4XTrUqflg6jrh1pPl0DWZVdJzY1I+VLDn1z4v3j5fJ8dQN1ZUiVKAP2r1QO+rCi8I5slIrpIUFkNxBF36S+gJchUbngIYS3cQ0Fu9TH70U5CJ/EEF4z6dIde5J6nMtU5TXOI27DBCBOAYZwDQ6jzkV2Ay8SMvesZiy7nf7cteMqBKs+5XTAEVEybKNq7k40GMi2YAKhlMBorPebJNwUFFdkn7NBol3ji7+ihXLeAlmk30/F8MbjkZ/BQieNbhAI="
 }
-BUCKET_NAME="deeprespred-bucket-files"
+BUCKET_NAME="deeprespred.pucp.edu.pe"
 IP_INFO_TOKEN="61df6841805a0f"
 
-BASE_DIR_REPO="/home/ubuntu/DeepReSPred-back"
+BASE_DIR_REPO="/home/ladmin/DeepReSPred-back"
 
 BASE_PATH=BASE_DIR_REPO+"/back_project"
 ALGORITHM_FOLDER=BASE_PATH+"/deepReSPred"                           #Directory with run_repeat_prediction.sh and MappingFasta.py
@@ -21,5 +21,7 @@ S3_UPLOAD_DIR=DAEMON_FOLDER + "/s3UploadDir"                 #Directory where so
 #URL_BACK_END_DEEPRESPRED = "http://localhost:9997/api/"
 #URL_FRONT_END_DEEPRESPRED="http://192.168.1.13:8080/"
 
-URL_BACK_END_DEEPRESPRED = "http://ec2-52-7-202-195.compute-1.amazonaws.com:9997/api/"
-URL_FRONT_END_DEEPRESPRED="http://ec2-44-199-91-203.compute-1.amazonaws.com/"
+URL_BACK_END_DEEPRESPRED = "http://54.156.135.177:9997/api/"
+URL_FRONT_END_DEEPRESPRED="http://deeprespred.duckdns.org/"
+
+EMAIL_TOKEN = "lmteuddclebbtssj"

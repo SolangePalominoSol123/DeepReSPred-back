@@ -216,7 +216,7 @@ class RequestResource(Resource):
 
         self.createFileDaemon(req.idRequest)
 
-        self.sendConfirmationEmail(email, req.idRequest)
+        self.sendConfirmationEmail(email, req.idRequest, typeInput, pfamID)
               
         #dateReq=req.dateAccess.strftime("%Y-%m-%d %H:%M:%S")
         response={
@@ -257,10 +257,10 @@ class RequestResource(Resource):
         text_file.write(idRequest)
         text_file.close()
     
-    def sendConfirmationEmail(self, email, idRequest):
+    def sendConfirmationEmail(self, email, idRequest, inputType, inputContent):
         if((email) or (email!="")):
             print("Sending confirmation email")
-            sendEmail(email, [], 1, idRequest)
+            sendEmail(email, [], 1, idRequest, inputType, inputContent)
 
     def put(self):
         request_json = request.get_json()

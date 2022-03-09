@@ -1,8 +1,12 @@
+from werkzeug.utils import secure_filename
+import pandas as pd
 from Bio import SeqIO
 import os
 import requests
 import shutil
 import sys
+import wget
+import ssl
 
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
@@ -12,23 +16,23 @@ from constants import FILES_DOWNLOADED
 from constants import URL_BACK_END_DEEPRESPRED
 from emailconfig import sendEmail
 
-def createDir(directory):
-    isdir = os.path.isdir(directory) 
-    if not isdir:        
-        try:
-            os.makedirs(directory)
-        except:
-            print("Error with directory: "+directory)
-            return False
-    
-    return True
-
 def clearDir(directory):
     try:
         shutil.rmtree(directory)
-        createDir(directory)
     except OSError as e:
         print("Error: %s: %s" % (directory, e.strerror))
+
+def createDir(directory):
+    isdir = os.path.isdir(directory) 
+    if isdir:
+        clearDir(directory)
+    try:
+        os.makedirs(directory)
+    except:
+        print("Error with directory: "+directory)
+        return False
+    
+    return True
 
 def convertSto2Fasta(dirFile):
     posDot=dirFile.find('.')
@@ -56,37 +60,7 @@ def downloadFilesToLocal(filename, extension):
         return ""
 
 
-def sendEmailWithResults(idRequest, email):
-    dataInput={
-        "idRequest":idRequest
-    }
-    response = requests.get(URL_BACK_END_DEEPRESPRED+"resultsFilesxReq/", json=dataInput)
-    print(response)
-    rsp=response.json()
-    fileList=rsp["files"]
-
-    filesFull=[]
-    for fileAux in fileList:
-        nameFull=fileAux["nameFile"]
-        print("Files results:")
-        print(nameFull)
-        pos=nameFull.find(".")
-        name=nameFull[:pos]
-        extension=nameFull[pos+1:]
-        print(name)
-        print(extension)
-        fullPathDownloaded= downloadFilesToLocal(name, extension)
-        if fullPathDownloaded!="":
-            filesFull.append(fullPathDownloaded)
-
-
-    #downloadedFiles
-    sendEmail(email, filesFull, 2, idRequest)
-    clearDir(FILES_DOWNLOADED)
-
-
-
-def validateAndAssignResults(idRequest,pfamID,email):
+def validateAndAssignResults(idRequest,pfamID,email, inputType):
     dataInput={
         "idRequest":idRequest,
         "pfamID":pfamID
@@ -99,21 +73,18 @@ def validateAndAssignResults(idRequest,pfamID,email):
     if existsPFAMresults:
         #send email with results of prediction
         if(email!=""):
-            sendEmailWithResults(idRequest, email)
+            #sendEmailWithResults2(idRequest, email, inputType, pfamID) #---update 08-03-2022
+            dataInput={
+                "email" : email,
+                "idRequest" : idRequest,
+                "inputType" : inputType,
+                "inputContent" : pfamID
+            }
+            requests.post(URL_BACK_END_DEEPRESPRED+"sendEmail/", json=dataInput)
         return True
     else:
 
         return False
-
-
-def processingAlignments(dirPDBAux, dirResults):
-    PDBAux_list = os.listdir(dirPDBAux)
-    if len(PDBAux_list)>0:
-        PDBAux_file=PDBAux_list[0]
-
-        PDBAux_list = os.listdir(dirResults)
-
-
 
 def verifyDirOrCreate(directory):
     isdir = os.path.isdir(directory) 
@@ -123,4 +94,3 @@ def verifyDirOrCreate(directory):
             os.makedirs(directory)
         except:
             print("Error verifying or creating directory: "+directory)
-            #sys.exit()

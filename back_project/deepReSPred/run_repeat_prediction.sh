@@ -4,9 +4,9 @@ echo "---------------------------Start------------------------------"
 
 
 # Set this to point to the DMPfold directory
-dmpfolddir=/home/ubuntu/algPrograms/DMPfold
-mappingFastaDir=/home/ubuntu/DeepReSPred-back/back_project/deepReSPred
-#dmpfolddir=/home/layla/dmpfold/DMPfold #enGuerrera
+dmpfolddir=/home/ladmin/algPrograms/DMPfold
+mappingFastaDir=/home/ladmin/DeepReSPred-back/back_project/deepReSPred
+
 
 
 if [ "$#" -lt 1 ]; then

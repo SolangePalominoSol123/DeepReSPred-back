@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import sys
 import re
-
+import ssl
 
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
@@ -19,13 +19,13 @@ from constants import ALGORITHM_FOLDER
 # %%
 basePath=''
 flagPFcode=True
-pfam='PF00806'
+pfam='PF18773'
 param=''
 filename=''
-rangeSeq=10
+rangeSeq=5
 PDBCodeStructure=[]
 maxLongSeq=550
-minLongSeq=20
+minLongSeq=15
 
 # %%
 if(len(sys.argv) > 1):    
@@ -76,10 +76,23 @@ def preProcessText(data, initPoint, endPoint):
     print("Position init of sequence: "+str(pos))
     print(after)
     
-    if((len(after)-2*rangeSeq)>=minLongSeq):
+    #if((len(after)-2*rangeSeq)>=minLongSeq):
+    if(((endPoint-initPoint)-2*rangeSeq)>=minLongSeq):
         print("reducing with min and max position from repeat fragments")
         initAux=initPoint+rangeSeq
         endAux=endPoint-rangeSeq+1
+        print("cutting range ["+str(initAux)+", "+str(endAux)+"]")
+        after=after[initAux:endAux]
+        print(after)
+    elif((endPoint-initPoint)>=minLongSeq):
+        print("keeping longitude from min and max position from repeat fragments")
+        print("cutting range ["+str(initPoint)+", "+str(endPoint)+"]")
+        after=after[initPoint:endPoint]
+        print(after)
+    elif(  ((endPoint-initPoint)+2*rangeSeq)<=maxLongSeq  and (initPoint-rangeSeq>=pos+1) and (endPoint+rangeSeq-1<=len(after)) ):
+        initAux=initPoint-rangeSeq
+        endAux=endPoint+rangeSeq-1
+        print("increasing with min and max position from repeat fragments")
         print("cutting range ["+str(initAux)+", "+str(endAux)+"]")
         after=after[initAux:endAux]
         print(after)
@@ -92,7 +105,7 @@ def preProcessText(data, initPoint, endPoint):
         full=before+after
         return (True, full)
     
-    print("Sequence length ("+str(len(after))+") not valid to prediction. Range valid - ["+str(minLongSeq)+", "+str(maxLongSeq)+"]")
+    print("Sequence length ("+str(endPoint-initPoint)+") not valid to prediction. Range valid - ["+str(minLongSeq)+", "+str(maxLongSeq)+"]")
     return (False, "")
 
 # %%
@@ -143,6 +156,8 @@ if flagPFcode:
     try:
         #urlFasta='https://pfam.xfam.org/family/alignment/download/format?acc='+pfam+'&alnType=full&format=fasta&order=t&case=l&gaps=default&download=1'
         urlFasta='https://pfam.xfam.org/family/alignment/download/format?acc='+pfam+'&alnType=seed&format=fasta&order=t&case=l&gaps=default&download=1'
+        print(urlFasta)
+        ssl._create_default_https_context = ssl._create_unverified_context
         filename = wget.download(urlFasta, out=ALGORITHM_PROCESSING)
         print("File Fasta downloaded:")
         print(filename)
@@ -338,8 +353,8 @@ dfSinEstructuras.shape
 # %%
 #PROCESAMOS LAS SECUENCIAS QUE NO TIENEN ESTRUCTURAS
 
-#Alternativa 1 (IN): Eliminacion o union de repetidas con mejor inicio y fin-> se saca el uniprot_accession, se buscan en archivos el uniprot_id y se busca la secuencia completa
-#Alternativa 2 (IS): Un archivo fasta por cada secuencia (check)
+#Alternativa 1 (nr): Eliminacion o union de repetidas con mejor inicio y fin-> se saca el uniprot_accession, se buscan en archivos el uniprot_id y se busca la secuencia completa
+#Alternativa 2 (is): Un archivo fasta por cada secuencia (check)
 
 # %%
 #Alternativa1:

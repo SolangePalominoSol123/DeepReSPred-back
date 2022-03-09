@@ -13,10 +13,11 @@ def gettingCredentialsFromJson():
 
 def getS3config():
 
-    keys = gettingCredentialsFromJson()
-    s3 = boto3.client('s3',
+    #keys = gettingCredentialsFromJson()
+    '''s3 = boto3.client('s3',
                         aws_access_key_id = keys["ACCESS_KEY_ID"],
                         aws_secret_access_key = keys["ACCESS_SECRET_KEY"],
                         aws_session_token = keys["AWS_SESSION_TOKEN"]
-                    )
+                    )'''
+    s3 = boto3.client('s3')
     return s3

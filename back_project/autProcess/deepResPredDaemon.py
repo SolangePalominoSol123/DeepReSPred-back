@@ -13,9 +13,7 @@ from auxiliarFunctionsDaemon import clearDir
 from auxiliarFunctionsDaemon import createDir
 from auxiliarFunctionsDaemon import convertSto2Fasta
 from auxiliarFunctionsDaemon import validateAndAssignResults
-from auxiliarFunctionsDaemon import sendEmailWithResults
 from auxiliarFunctionsDaemon import verifyDirOrCreate
-from auxiliarFunctionsDaemon import processingAlignments
 
 import fnmatch
 import os
@@ -52,10 +50,11 @@ while True:
     if len(newReqs_list)>0:
         idRequest=newReqs_list[0]
         print(idRequest)
-        q.append(idRequest)
-
-        print("Daemon queue status:")
-        print(q)
+        if q.count(idRequest)<=0:
+            q.append(idRequest)
+            print("Daemon queue status:")
+            print(q)
+            
         """
         nameFileFull=os.path.join(DAEMON_QUEUE_FOLDER, secure_filename(idRequest))
 
@@ -103,7 +102,7 @@ while True:
         already=False
         #verify if pfamID is not null and if pfamId has a already calculated results
         if ((pfamID is not None) or (typeInput=="pfamCode")):
-            already=validateAndAssignResults(actualIdRequest,pfamID,email)
+            already=validateAndAssignResults(actualIdRequest,pfamID,email, typeInput)
             print("Already calculated?")
             print(already)
             
@@ -233,7 +232,14 @@ while True:
             print(rsp)
 
             if (email!=""):
-                sendEmailWithResults(actualIdRequest, email)
+                #sendEmailWithResults2(actualIdRequest, email, typeInput, pfamID)   #update 08-03-2022
+                dataInput={
+                    "email" : email,
+                    "idRequest" : idRequest,
+                    "inputType" : typeInput,
+                    "inputContent" : pfamID
+                }
+                requests.post(URL_BACK_END_DEEPRESPRED+"sendEmail/", json=dataInput)
 
 
             #taking out from queue request id
@@ -243,6 +249,7 @@ while True:
             if os.path.exists(nameFileFull):
                 os.remove(nameFileFull)
                 print("File queue of prediction idRequest removed. The prediction process has finished.")
+                print(str(idRequest))
             else:
                 print("The file queue of prediction idRequest to remove does not exist")
     
