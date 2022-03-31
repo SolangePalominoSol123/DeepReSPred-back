@@ -115,4 +115,4 @@ def sendEmail (receiver, files, type, idRequest, inputType, inputContent):
         print('Closing the server...')
         server.quit()
 
-#sendEmail("74883736@pronabec.edu.pe", [],1,"ASDOW","PFAMCode","PF20291")
+#sendEmail("correo@dominio.com", [],1,"ASDOW","PFAMCode","PF20291")

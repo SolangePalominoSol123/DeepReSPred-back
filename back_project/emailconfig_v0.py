@@ -44,6 +44,6 @@ def sendEmail(receiver, files, type, idRequest):
         attachments = files
     )
 
-#yagmail.register('deeprespred@gmail.com', '2022#deeprespred')
+#yagmail.register('deeprespred@gmail.com', '')
 
-#sendEmail("spalomino@pucp.edu.pe", [],1,"ASDOW")
+#sendEmail("correoprueba@dominio.com", [],1,"ASDOW")
