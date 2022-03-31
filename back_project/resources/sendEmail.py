@@ -4,6 +4,7 @@ from flask_restful import Resource
 from flask import request
 from emailconfig import sendEmail
 from constants import FILES_DOWNLOADED
+from constants import URL_BACK_END_DEEPRESPRED
 from models.request import Request
 from models.filexreq import Filexreq
 from models.file import File
@@ -92,7 +93,7 @@ class SendEmailResource(Resource):
         return df
 
     def downloadingResults(self, filename, format, destinationName):
-        urlS3='http://54.156.135.177:9997/api/s3file/?code='+filename+'&ext='+format+'&typed=1'
+        urlS3=URL_BACK_END_DEEPRESPRED+'s3file/?code='+filename+'&ext='+format+'&typed=1'
         ssl._create_default_https_context = ssl._create_unverified_context
         wget.download(urlS3, out=destinationName) 
         return destinationName

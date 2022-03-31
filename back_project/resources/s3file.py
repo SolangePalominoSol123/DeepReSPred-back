@@ -33,7 +33,7 @@ class S3FileResource(Resource):
      
         return response
 
-    #http://192.168.1.13:9997/api/s3file/?code=prueba&ext=fasta&typed=1
+    
     def get(self):       
         #descargar de s3
         print(request)

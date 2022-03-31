@@ -1,10 +1,5 @@
 CONFIG_FILENAME="config"
-keys={
-    "ACCESS_KEY_ID": "",
-    "ACCESS_SECRET_KEY": "",
-    "AWS_SESSION_TOKEN": ""
-}
-BUCKET_NAME="deeprespred.pucp.edu.pe"
+BUCKET_NAME=""
 IP_INFO_TOKEN=""
 
 BASE_DIR_REPO="/home/ladmin/DeepReSPred-back"
@@ -17,8 +12,16 @@ DAEMON_QUEUE_FOLDER=DAEMON_FOLDER + "/queueReq"                     #Directory w
 ALGORITHM_PROCESSING=DAEMON_FOLDER + "/processingPred"              #Directory where the prediction algorithm will work
 FILES_DOWNLOADED=DAEMON_FOLDER + "/filesDownloaded"                 #Directory as support to saved files downloaded from S3, this files will be deleted after their use
 S3_UPLOAD_DIR=DAEMON_FOLDER + "/s3UploadDir"                 #Directory where some files could be in order to upload them to S3 from local
+CONSTANT_AWS_S3_KEY_JSON="constants_aws.json"                       #Path to json file with aws s3 keys
 
-URL_BACK_END_DEEPRESPRED = "http://backend:9997/api/"
-URL_FRONT_END_DEEPRESPRED="http://deeprespred.duckdns.org/"
+
+URL_BACK_END_DEEPRESPRED = "http://localhost:9997/api/"
+URL_FRONT_END_DEEPRESPRED="http://frontendDomain/"
 
 EMAIL_TOKEN = ""
+
+#BD config
+DB_USER=""
+DB_PASS=""
+DB_ADDR=""
+DB_NAME=""
